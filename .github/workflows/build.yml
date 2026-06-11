@@ -12,14 +12,14 @@ jobs:
     permissions:
       contents: write # needed to attach release assets on tag builds
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       # Build the same image compose uses, with layer caching so the ~1 GB
       # Godot template download only happens when the Dockerfile changes.
       - name: Build export image (cached)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true
@@ -27,16 +27,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # --user passes the runner's real UID (1001) — the compose file's
+      # ${UID:-1000} default only fits local dev, and bash doesn't export UID.
       - name: Export Linux release
-        run: docker compose run --rm export
+        run: docker compose run --rm --user "$(id -u):$(id -g)" export
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux-x86_64
           path: builds/linux/
 
       - name: Attach builds to release
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: builds/linux/*
