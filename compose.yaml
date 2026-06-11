@@ -5,7 +5,11 @@ services:
     # Explicit tag so CI can pre-build this image with layer caching and
     # `compose run` picks it up instead of rebuilding.
     image: godot-playground-export:local
-    user: "${UID:-1000}:${GID:-1000}"
+    # Rootful docker: map to the host user so bind-mounted output isn't
+    # root-owned. Rootless docker: set DOCKER_USER=0:0 (container root == host
+    # user there). `make build` detects this automatically — prefer it over
+    # invoking compose directly.
+    user: "${DOCKER_USER:-1000:1000}"
     volumes:
       - .:/project
     working_dir: /project

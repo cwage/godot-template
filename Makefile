@@ -19,9 +19,15 @@ $(GODOT_BIN):
 	unzip -q $(GODOT_DIR)/godot.zip -d $(GODOT_DIR)
 	rm $(GODOT_DIR)/godot.zip
 
-# Dockerized release export — identical to what CI runs.
+# Container user for the export. Rootful docker: the invoking user, so bind
+# mount output isn't root-owned. Rootless docker: container root, which the
+# user namespace maps back to the host user (an unprivileged container UID
+# would map to an unwritable subuid instead).
+DOCKER_USER := $(if $(findstring rootless,$(shell docker info -f '{{.SecurityOptions}}' 2>/dev/null)),0:0,$(shell id -u):$(shell id -g))
+
+# Dockerized release export — identical to what CI runs (CI calls this target).
 build:
-	docker compose run --rm export
+	DOCKER_USER=$(DOCKER_USER) docker compose run --rm export
 
 clean:
 	rm -rf builds

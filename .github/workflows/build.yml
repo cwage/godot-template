@@ -27,10 +27,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # --user passes the runner's real UID (1001) — the compose file's
-      # ${UID:-1000} default only fits local dev, and bash doesn't export UID.
+      # `make build` resolves the right container user for the environment
+      # (runner UID on rootful docker, root on rootless) — same path as local.
       - name: Export Linux release
-        run: docker compose run --rm --user "$(id -u):$(id -g)" export
+        run: make build
 
       - uses: actions/upload-artifact@v7
         with:

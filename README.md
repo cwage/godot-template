@@ -62,8 +62,14 @@ You'll still use the Godot editor for scene composition.
 ## Building (dockerized)
 
 ```
-make build        # == docker compose run --rm export
+make build
 ```
+
+This wraps `docker compose run --rm export`, setting the container user to
+match your environment: your own UID on rootful docker (so output isn't
+root-owned), container root on rootless docker (where the user namespace maps
+it back to you). If you invoke compose directly on a rootless setup, set
+`DOCKER_USER=0:0`.
 
 First run builds the image (downloads ~1 GB of export templates once, then
 cached). Output lands in `builds/linux/godot-playground.x86_64` — a single
