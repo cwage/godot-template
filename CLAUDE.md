@@ -4,7 +4,7 @@ Godot 4.6.3 learning project. GDScript, single Linux export preset, dockerized b
 
 ## Commands
 
-- `make build` — dockerized release export via `docker compose run --rm export`; output in `builds/linux/`. This is exactly what CI runs (`ci/export.sh` is the shared entry point).
+- `make build` — dockerized release export; output in `builds/linux/`. CI runs this same target. Always use it instead of raw `docker compose run export`: it sets `DOCKER_USER` correctly for rootful vs rootless docker.
 - `make edit` — fetches the pinned editor binary into `tools/` and opens the GUI editor. Blocking GUI app: never run it from an agent session; ask the user to run it.
 - Headless smoke test of an export: `./builds/linux/godot-playground.x86_64 --headless --quit`
 
