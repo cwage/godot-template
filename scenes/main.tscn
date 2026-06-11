@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cc37dfhcqq710"]
+
+[ext_resource type="Script" uid="uid://t461voq807ah" path="res://scripts/main.gd" id="1_main"]
+
+[node name="Main" type="Node2D" unique_id=1877476923]
+script = ExtResource("1_main")
+
+[node name="Label" type="Label" parent="." unique_id=2053816148]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 600.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 32
+text = "Press SPACE."

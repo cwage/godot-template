@@ -1,0 +1,22 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Official GDScript style uses tabs
+[*.gd]
+indent_style = tab
+
+# Godot writes these itself — match its output
+[*.{tscn,tres,godot,cfg,import}]
+indent_style = tab
+
+[*.{yml,yaml,json,md,sh}]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab

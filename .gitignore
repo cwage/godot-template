@@ -1,0 +1,19 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Pinned editor binary fetched by `make edit`
+/tools/
+
+# Exported builds
+/builds/
+*.apk
+*.aab
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores (only relevant if you switch to the .NET build)
+.mono/
+data_*/
+mono_crash.*.json

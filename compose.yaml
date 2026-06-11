@@ -1,0 +1,12 @@
+services:
+  # Headless export build: `docker compose run --rm export`
+  export:
+    build: .
+    # Explicit tag so CI can pre-build this image with layer caching and
+    # `compose run` picks it up instead of rebuilding.
+    image: godot-playground-export:local
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - .:/project
+    working_dir: /project
+    command: ["ci/export.sh", "Linux"]
